@@ -1,0 +1,11 @@
+[
+  {
+    "table": "Table 1",
+    "name": "John Doe",
+    "phone": "123 456 7890",
+    "guests": "4",
+    "date": "2025-10-22",
+    "time": "14:52",
+    "id": 1
+  }
+]
