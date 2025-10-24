@@ -19,7 +19,12 @@ app.get('/', (req, res) => {
 
 // For every case, we have a separate app.get call. More modular way for routing instead of big if statement
 app.get('/reservations', (req, res) => {
-  res.send("Saved reservations should show up here");
+  // res.send("Saved reservations should show up here");
+  let read_reservations_str = fs.readFileSync("reservations.json");
+  let read_reservations = JSON.parse(read_reservations_str);
+
+  res.json(read_reservations);
+  // res.send(read_reservations); // sends JSON string
 });
 
 // The colon indicates variable or placeholder dog name
@@ -50,13 +55,12 @@ app.post('/reservations', (req, res) => {
   }
   reservation.id = nextId;
 
-  // Add the new reservation
+  // Adds to list
   data.push(reservation);
 
-  // Save back to JSON file
+  // Saves to JSON file
   fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
 
-  // Respond to client
   res.json({ message: 'Reservation saved successfully!', reservation });
 });
 
