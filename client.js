@@ -1,11 +1,18 @@
 const tables = document.querySelectorAll('.table');
 tables.forEach(table => {
   const reserveButton = table.querySelector('.reserve');
-  reserveButton.addEventListener('click', () => makeReservation(table));
+  reserveButton.type = 'button';
+  reserveButton.addEventListener('click', (e) => {
+    e.preventDefault();
+    makeReservation(table);
+  })
 });
-
+// Changed so that loadReservations() runs after every create, update, delete
 const refreshReservationsButton = document.querySelector("#loadReservations");
-refreshReservationsButton.addEventListener('click', loadReservations);
+refreshReservationsButton.addEventListener('click', (e) => {
+  e.preventDefault();
+  loadReservations();
+});
 
 function makeReservation(table) {
   const reservation = {
@@ -25,7 +32,8 @@ function makeReservation(table) {
   request.onload = function() {
     if (request.status == 200) {
       console.log("Server response: ", request.responseText);
-      alert(request.responseText);
+      // alert(request.responseText);
+      loadReservations();
     } else { // Server error
       console.error("Error: ", request.statusText);
       alert("Failed to save reservation. (server)");
@@ -42,7 +50,7 @@ function makeReservation(table) {
 
 function updateReservation(reservation) {
   const updatedReservation = {
-    id: reservation.querySelector('.reservationId').textContent,
+    id: parseInt(reservation.querySelector('.reservationId').textContent),
     table: reservation.querySelector('input[name="table"]').value,
     name: reservation.querySelector('input[name="name"]').value,
     phone: reservation.querySelector('input[name="phone"]').value,
@@ -59,7 +67,8 @@ function updateReservation(reservation) {
   request.onload = function() {
     if (request.status == 200) {
       console.log("Server response: ", request.responseText);
-      alert(request.responseText);
+      // alert(request.responseText);
+      //loadReservations();
     } else { // Server error
       console.error("Error: ", request.statusText);
       alert("Failed to save reservation. (server)");
@@ -72,6 +81,41 @@ function updateReservation(reservation) {
   };
   // Send the reservation
   request.send(JSON.stringify(updatedReservation));
+}
+
+function deleteReservation(reservation) {
+  const reservationToDelete = {
+    id: parseInt(reservation.querySelector('.reservationId').textContent),
+    table: reservation.querySelector('input[name="table"]').value,
+    name: reservation.querySelector('input[name="name"]').value,
+    phone: reservation.querySelector('input[name="phone"]').value,
+    guests: reservation.querySelector('input[name="guests"]').value,
+    date: reservation.querySelector('input[name="date"]').value,
+    time: reservation.querySelector('input[name="time"]').value
+  };
+  console.log('Reservation to delete info:', reservationToDelete);
+
+  // Send reservation to server
+  const request = new XMLHttpRequest();
+  request.open("DELETE", `http://127.0.0.1:4000/reservations/${reservationToDelete.id}`, true);
+  request.setRequestHeader('Content-Type', 'application/json');
+  request.onload = function() {
+    if (request.status == 200) {
+      console.log("Server response: ", request.responseText);
+      // alert(request.responseText);
+      loadReservations();
+    } else { // Server error
+      console.error("Error: ", request.statusText);
+      alert("Failed to save reservation. (server)");
+    }
+  }
+  // Network error here
+  request.onerror = function() {
+    console.error('Network error');
+    alert('Failed to save reservation. (network)');
+  };
+  // Send the reservation
+  request.send(JSON.stringify(reservationToDelete));
 }
 
 // Helper function to create label inputs for loadReservations()
@@ -124,18 +168,29 @@ function loadReservations() {
         reservationDiv.appendChild(createLabeledInput('Time', 'time', 'time', reservation.time));
         
         // Create Update button
-        const updateBtn = document.createElement('button');
-        updateBtn.className = 'update';
-        updateBtn.textContent = 'Update';
-        reservationDiv.appendChild(updateBtn);
+        const updateButton = document.createElement('button');
+        updateButton.type = 'button';
+        updateButton.className = 'update';
+        updateButton.textContent = 'Update';
+        reservationDiv.appendChild(updateButton);
         
         // Create Delete button
-        const deleteBtn = document.createElement('button');
-        deleteBtn.className = 'delete';
-        deleteBtn.textContent = 'Delete';
-        reservationDiv.appendChild(deleteBtn);
+        const deleteButton = document.createElement('button');
+        deleteButton.type = 'button';
+        deleteButton.className = 'delete';
+        deleteButton.textContent = 'Delete';
+        reservationDiv.appendChild(deleteButton);
         
-        updateBtn.addEventListener('click', () => updateReservation(reservationDiv));
+        // updateButton.addEventListener('click', () => updateReservation(reservationDiv));
+        // deleteButton.addEventListener('click', () => deleteReservation(reservationDiv));
+        updateButton.addEventListener('click', (e) => {
+          e.preventDefault();
+          updateReservation(reservationDiv);
+        });
+        deleteButton.addEventListener('click', (e) => {
+          e.preventDefault();
+          deleteReservation(reservationDiv);
+        });
 
         // Add the complete reservation div to the container
         reservationsContainer.appendChild(reservationDiv);

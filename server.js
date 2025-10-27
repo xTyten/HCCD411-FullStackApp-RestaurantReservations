@@ -18,6 +18,7 @@ app.get('/', (req, res) => {
 });
 
 // For every case, we have a separate app.get call. More modular way for routing instead of big if statement
+// Gets reservations
 app.get('/reservations', (req, res) => {
   // res.send("Saved reservations should show up here");
   let read_reservations_str = fs.readFileSync("reservations.json");
@@ -27,12 +28,7 @@ app.get('/reservations', (req, res) => {
   // res.send(read_reservations); // sends JSON string
 });
 
-// The colon indicates variable or placeholder dog name
-app.get('/reservations/:id', (req, res) => {
-  let reservationId = req.params.id;
-  res.send(`Checking for reservation with ID: ${reservationId}`);
-});
-
+// Creates reservations
 app.post('/reservations', (req, res) => {
   const reservation = req.body;
   console.log('Received reservation:', reservation);
@@ -69,16 +65,16 @@ app.listen(port, hostname, () => {
   console.log(`Server running at ${hostname}:${port}`);
 });
 
-// UPDAT EHEREHRHSEKLR
+// Updates reservations
 app.put('/reservations/:id', (req, res) => {
-  let reservationId = req.params.id;
+  let reservationId = parseInt(req.params.id);
   const updatedReservation = req.body;
   console.log('Received updated reservation:', updatedReservation);
 
   // Read existing reservations from file
   let data = [];
   const filePath = 'reservations.json';
-    // Creates reservations.json if it doesn't exist
+    // checks for reservation file
   if (!fs.existsSync(filePath)) {
     return res.status(404).json({ message: "Reservation file not found" });
   } else if (fs.existsSync(filePath)) {
@@ -102,6 +98,41 @@ app.put('/reservations/:id', (req, res) => {
   fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
 
   res.json({ message: 'Reservation updated successfully!', updatedReservation });
+});
+
+// Deletes reservations
+app.delete('/reservations/:id', (req, res) => {
+  let reservationId = parseInt(req.params.id);
+  const reservationToDelete = req.body;
+  console.log('Received reservation to delete:', reservationToDelete);
+
+  // Read existing reservations from file
+  let data = [];
+  const filePath = 'reservations.json';
+    // checks for reservation file
+  if (!fs.existsSync(filePath)) {
+    return res.status(404).json({ message: "Reservation file not found" });
+  } else if (fs.existsSync(filePath)) {
+    data = JSON.parse(fs.readFileSync(filePath));
+  }
+
+  // Finds the index using the reservationId
+  const index = data.findIndex((reservation) => {
+    return reservation.id == reservationId;
+  });
+  // If id index isn't found
+  if (index === -1) {
+    return res.status(404).json({ message: 'Reservation not found' });
+  }
+
+  // Makes sure the ID stays the same and updates the reservation in the list
+  // .splice(indexNumber, numberOfItems)[returns 0th index of the deleted list]
+  const deletedReservation = data.splice(index, 1)[0];
+
+  // Saves to JSON file
+  fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+
+  res.json({ message: 'Reservation deleted successfully!', deletedReservation });
 });
 
 // Start our server
