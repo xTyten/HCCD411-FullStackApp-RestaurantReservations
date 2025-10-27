@@ -8,7 +8,20 @@ label, input {
   gap: 40px;
 }
 
+#tables {
+  display: flex;
+  flex-direction: row;
+  gap: 40px;
+}
+
 .reservation {
   /* Doesn't take up space in box model */
   outline: 2px solid black;
+}
+
+#reservationsContainer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 40px;
 }

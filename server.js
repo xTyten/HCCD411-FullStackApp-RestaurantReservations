@@ -69,6 +69,46 @@ app.listen(port, hostname, () => {
   console.log(`Server running at ${hostname}:${port}`);
 });
 
+// UPDAT EHEREHRHSEKLR
+app.put('/reservations/:id', (req, res) => {
+  let reservationId = req.params.id;
+  const updatedReservation = req.body;
+  console.log('Received updated reservation:', updatedReservation);
+
+  // Read existing reservations from file
+  let data = [];
+  const filePath = 'reservations.json';
+    // Creates reservations.json if it doesn't exist
+  if (!fs.existsSync(filePath)) {
+    return res.status(404).json({ message: "Reservation file not found" });
+  } else if (fs.existsSync(filePath)) {
+    data = JSON.parse(fs.readFileSync(filePath));
+  }
+
+  // Finds the index using the reservationId
+  const index = data.findIndex((reservation) => {
+    return reservation.id == reservationId;
+  });
+  // If id index isn't found
+  if (index === -1) {
+    return res.status(404).json({ message: 'Reservation not found' });
+  }
+
+  // Makes sure the ID stays the same and updates the reservation in the list
+  updatedReservation.id = reservationId;
+  data[index] = updatedReservation;
+
+  // Saves to JSON file
+  fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+
+  res.json({ message: 'Reservation updated successfully!', updatedReservation });
+});
+
+// Start our server
+app.listen(port, hostname, () => {
+  console.log(`Server running at ${hostname}:${port}`);
+});
+
 // GET /reservations/all
 // GET /reservations/01_01_2025
 // GET /reservations/01_01_2025/table7

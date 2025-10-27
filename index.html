@@ -10,88 +10,91 @@
 </head>
 <body>
   <div id="container">
-    <div id="tables">
+    <div id="tablesAndTitle">
       <h1>Tables</h1>
-      <div class="table" id="table1">
-        <h3>Table 1</h3>
-        <label for="name1">Name</label>
-        <input type="text" name="name" id="name1" placeholder="John Doe">
+      <div id="tables">
+        <div class="table" id="table1">
+          <h3>Table 1</h3>
+          <label for="name1">Name</label>
+          <input type="text" name="name" id="name1" placeholder="John Doe" required>
 
-        <!-- #table1 input[name="phone"] -->
-        <label for="phone1">Phone number</label>
-        <input type="tel" name="phone" id="phone1" placeholder="(123) 456-7890">
+          <!-- #table1 input[name="phone"] -->
+          <label for="phone1">Phone number</label>
+          <input type="tel" name="phone" id="phone1" placeholder="(123) 456-7890" required>
 
-        <label for="guests1">Number of guests</label>
-        <input type="number" name="guests" id="guests1" placeholder="4">
+          <label for="guests1">Number of guests</label>
+          <input type="number" name="guests" id="guests1" placeholder="4" required>
 
-        <label for="date1">Date</label>
-        <input type="date" name="date" id="date1" required>
+          <label for="date1">Date</label>
+          <input type="date" name="date" id="date1" required>
 
-        <label for="time1">Time</label>
-        <input type="time" name="time" id="time1" required>
+          <label for="time1">Time</label>
+          <input type="time" name="time" id="time1" required>
 
-        <button class="reserve">Reserve Table</button>
-      </div>
-      <div class="table" id="table2">
-        <h3>Table 2</h3>
-        <label for="name2">Name</label>
-        <input type="text" name="name" id="name2" placeholder="John Doe">
+          <button class="reserve">Reserve Table</button>
+        </div>
+        <div class="table" id="table2">
+          <h3>Table 2</h3>
+          <label for="name2">Name</label>
+          <input type="text" name="name" id="name2" placeholder="John Doe" required>
 
-        <label for="phone2">Phone number</label>
-        <input type="tel" name="phone" id="phone2" placeholder="(123) 456-7890">
+          <label for="phone2">Phone number</label>
+          <input type="tel" name="phone" id="phone2" placeholder="(123) 456-7890" required>
 
-        <label for="guests2">Number of guests</label>
-        <input type="number" name="guests" id="guests2" placeholder="4">
+          <label for="guests2">Number of guests</label>
+          <input type="number" name="guests" id="guests2" placeholder="4" required>
 
-        <label for="date2">Date</label>
-        <input type="date" name="date" id="date2" required>
+          <label for="date2">Date</label>
+          <input type="date" name="date" id="date2" required>
 
-        <label for="time2">Time</label>
-        <input type="time" name="time" id="time2" required>
+          <label for="time2">Time</label>
+          <input type="time" name="time" id="time2" required>
 
-        <button class="reserve">Reserve Table</button>
-      </div>
-      <div class="table" id="table3">
-        <h3>Table 3</h3>
-        <label for="name3">Name</label>
-        <input type="text" name="name" id="name3" placeholder="John Doe">
+          <button class="reserve">Reserve Table</button>
+        </div>
+        <div class="table" id="table3">
+          <h3>Table 3</h3>
+          <label for="name3">Name</label>
+          <input type="text" name="name" id="name3" placeholder="John Doe" required>
 
-        <label for="phone3">Phone number</label>
-        <input type="tel" name="phone" id="phone3" placeholder="(123) 456-7890">
+          <label for="phone3">Phone number</label>
+          <input type="tel" name="phone" id="phone3" placeholder="(123) 456-7890" required>
 
-        <label for="guests3">Number of guests</label>
-        <input type="number" name="guests" id="guests3" placeholder="4">
+          <label for="guests3">Number of guests</label>
+          <input type="number" name="guests" id="guests3" placeholder="4" >
 
-        <label for="date4">Date</label>
-        <input type="date" name="date" id="date4" required>
+          <label for="date4">Date</label>
+          <input type="date" name="date" id="date4" required>
 
-        <label for="time4">Time</label>
-        <input type="time" name="time" id="time4" required>
+          <label for="time4">Time</label>
+          <input type="time" name="time" id="time4" required>
 
-        <button class="reserve">Reserve Table</button>
+          <button class="reserve">Reserve Table</button>
+        </div>
       </div>
     </div>
+
     <div id="reservations">
       <h1>Reservations</h1>
       <button id="loadReservations">Load New Reservations</button>
       <div id="reservationsContainer">
         <div class="reservation">
-          <p>ID: 1</p>
+          <p>ID: <span class="reservationId">1</span></p>
           <label>
             Table
-            <input type="text" name="table" value="1">
+            <input type="text" name="table" value="Table 1" required>
           </label>
           <label>
             Name
-            <input type="text" name="name" value="John Doe">
+            <input type="text" name="name" value="John Doe" required>
           </label>
           <label>
             Phone number
-            <input type="tel" name="phone" value="(123) 456-7890">
+            <input type="tel" name="phone" value="(123) 456-7890" required>
           </label>
           <label>
             Number of guests
-            <input type="number" name="guests" value="4">
+            <input type="number" name="guests" value="4" required>
           </label>
           <label>
             Date
