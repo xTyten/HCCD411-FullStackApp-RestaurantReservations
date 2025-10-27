@@ -1,16 +1,13 @@
 const tables = document.querySelectorAll('.table');
 tables.forEach(table => {
   const reserveButton = table.querySelector('.reserve');
-  reserveButton.type = 'button';
   reserveButton.addEventListener('click', (e) => {
-    e.preventDefault();
     makeReservation(table);
   })
 });
 // Changed so that loadReservations() runs after every create, update, delete
 const refreshReservationsButton = document.querySelector("#loadReservations");
 refreshReservationsButton.addEventListener('click', (e) => {
-  e.preventDefault();
   loadReservations();
 });
 
@@ -169,14 +166,12 @@ function loadReservations() {
         
         // Create Update button
         const updateButton = document.createElement('button');
-        updateButton.type = 'button';
         updateButton.className = 'update';
         updateButton.textContent = 'Update';
         reservationDiv.appendChild(updateButton);
         
         // Create Delete button
         const deleteButton = document.createElement('button');
-        deleteButton.type = 'button';
         deleteButton.className = 'delete';
         deleteButton.textContent = 'Delete';
         reservationDiv.appendChild(deleteButton);
@@ -184,11 +179,9 @@ function loadReservations() {
         // updateButton.addEventListener('click', () => updateReservation(reservationDiv));
         // deleteButton.addEventListener('click', () => deleteReservation(reservationDiv));
         updateButton.addEventListener('click', (e) => {
-          e.preventDefault();
           updateReservation(reservationDiv);
         });
         deleteButton.addEventListener('click', (e) => {
-          e.preventDefault();
           deleteReservation(reservationDiv);
         });
 

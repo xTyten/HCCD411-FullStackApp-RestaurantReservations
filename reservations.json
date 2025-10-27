@@ -18,12 +18,12 @@
     "time": "15:00"
   },
   {
+    "id": 4,
     "table": "Table 1",
     "name": "Oney Oneson",
     "phone": "111 111 1111",
     "guests": "1",
     "date": "2025-11-01",
-    "time": "13:00",
-    "id": 4
+    "time": "13:00"
   }
 ]
