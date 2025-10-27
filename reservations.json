@@ -25,5 +25,14 @@
     "guests": "1",
     "date": "2025-11-01",
     "time": "13:00"
+  },
+  {
+    "id": 5,
+    "table": "Table 3",
+    "name": "CONFLICT TEST",
+    "phone": "111 222 3333",
+    "guests": "4",
+    "date": "2025-11-03",
+    "time": "16:30"
   }
 ]

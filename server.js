@@ -28,6 +28,13 @@ app.get('/reservations', (req, res) => {
   // res.send(read_reservations); // sends JSON string
 });
 
+// Helper function to calculate time to minutes
+function timeToMinutes(timeString) {
+  const timeParts = timeString.split(':');
+  const hours = parseInt(timeParts[0]);
+  const minutes = parseInt(timeParts[1]);
+  return hours * 60 + minutes;
+}
 // Creates reservations
 app.post('/reservations', (req, res) => {
   const reservation = req.body;
@@ -41,6 +48,33 @@ app.post('/reservations', (req, res) => {
     fs.writeFileSync(filePath, '[]');
   } else if (fs.existsSync(filePath)) {
     data = JSON.parse(fs.readFileSync(filePath));
+  }
+
+  // Estimated length for reservation
+  const reservationDuration = 90;
+
+  // Checks for conflicts with table, date, time
+  const conflict = data.find(existingRes => {
+    // Checks same table and same date and loops
+    if (existingRes.table !== reservation.table || existingRes.date !== reservation.date) {
+      return false;
+    }
+
+    // Converts to minutes
+    const newStart = timeToMinutes(reservation.time);
+    const newEnd = newStart + reservationDuration;
+    const existingStart = timeToMinutes(existingRes.time);
+    const existingEnd = existingStart + reservationDuration;
+    
+    // Checks if newStart is before existingEnd and if newEnd is after existingStart
+    return newStart < existingEnd && newEnd > existingStart;
+  });
+
+  if (conflict) {
+    console.log('Conflict with time');
+    return res.status(409).json({ 
+      message: `This table is already reserved on ${conflict.time} on ${conflict.date}. Reservations need 1.5 hours between them.`
+    });
   }
 
   // Creates an id for each reservation by adding 1 to the last reservation
@@ -79,6 +113,37 @@ app.put('/reservations/:id', (req, res) => {
     return res.status(404).json({ message: "Reservation file not found" });
   } else if (fs.existsSync(filePath)) {
     data = JSON.parse(fs.readFileSync(filePath));
+  }
+
+  // Estimated length for reservation
+  const reservationDuration = 90;
+
+  // Checks for conflicts with table, date, time
+  const conflict = data.find(existingRes => {
+    // Skips itself if it has the same ID
+    if (existingRes.id === reservationId) {
+      return false;
+    }
+    // Checks same table and same date and loops
+    if (existingRes.table !== updatedReservation.table || existingRes.date !== updatedReservation.date) {
+      return false;
+    }
+
+    // Converts to minutes
+    const newStart = timeToMinutes(updatedReservation.time);
+    const newEnd = newStart + reservationDuration;
+    const existingStart = timeToMinutes(existingRes.time);
+    const existingEnd = existingStart + reservationDuration;
+    
+    // Checks if newStart is before existingEnd and if newEnd is after existingStart
+    return newStart < existingEnd && newEnd > existingStart;
+  });
+
+  if (conflict) {
+    console.log('Conflict with time');
+    return res.status(409).json({ 
+      message: `This table is already reserved on ${conflict.time} on ${conflict.date}. Reservations need 1.5 hours between them.`
+    });
   }
 
   // Finds the index using the reservationId

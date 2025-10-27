@@ -31,6 +31,9 @@ function makeReservation(table) {
       console.log("Server response: ", request.responseText);
       // alert(request.responseText);
       loadReservations();
+    } else if (request.status == 409) {
+      const response = JSON.parse(request.responseText);
+      alert(response.message);
     } else { // Server error
       console.error("Error: ", request.statusText);
       alert("Failed to save reservation. (server)");
@@ -65,7 +68,10 @@ function updateReservation(reservation) {
     if (request.status == 200) {
       console.log("Server response: ", request.responseText);
       // alert(request.responseText);
-      //loadReservations();
+      loadReservations();
+    } else if (request.status == 409) {
+      const response = JSON.parse(request.responseText);
+      alert(response.message);
     } else { // Server error
       console.error("Error: ", request.statusText);
       alert("Failed to save reservation. (server)");
