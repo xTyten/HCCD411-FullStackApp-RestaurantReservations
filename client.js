@@ -69,6 +69,9 @@ function updateReservation(reservation) {
       console.log("Server response: ", request.responseText);
       // alert(request.responseText);
       loadReservations();
+    } else if (request.status == 404) {
+      const response = JSON.parse(request.responseText);
+      alert(response.message);
     } else if (request.status == 409) {
       const response = JSON.parse(request.responseText);
       alert(response.message);
@@ -107,6 +110,9 @@ function deleteReservation(reservation) {
       console.log("Server response: ", request.responseText);
       // alert(request.responseText);
       loadReservations();
+    } else if (request.status == 404) {
+      const response = JSON.parse(request.responseText);
+      alert(response.message);
     } else { // Server error
       console.error("Error: ", request.statusText);
       alert("Failed to save reservation. (server)");
@@ -194,7 +200,12 @@ function loadReservations() {
         // Add the complete reservation div to the container
         reservationsContainer.appendChild(reservationDiv);
       });
-
+    } else if (request.status == 404) {
+      const response = JSON.parse(request.responseText);
+      alert(response.message);
+    } else if (request.status = 400){
+      const response = JSON.parse(request.responseText);
+      alert(response.message);
     } else {
       console.error("Error: ", request.statusText);
       alert("Failed to save reservation. (server)");

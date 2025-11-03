@@ -19,13 +19,21 @@ app.get('/', (req, res) => {
 
 // For every case, we have a separate app.get call. More modular way for routing instead of big if statement
 // Gets reservations
+// (request, response)
 app.get('/reservations', (req, res) => {
-  // res.send("Saved reservations should show up here");
-  let read_reservations_str = fs.readFileSync("reservations.json");
-  let read_reservations = JSON.parse(read_reservations_str);
+  const filePath = 'reservations.json';
+  if (!fs.existsSync(filePath)) {
+    return res.status(404).json({ message: "Reservation file not found" });
+  } else if (fs.statSync(filePath).size == 0) {
+    return res.status(400).json({ message: "Reservation file is empty"});
+  } else {
+    // res.send("Saved reservations should show up here");
+    let read_reservations_str = fs.readFileSync("reservations.json");
+    let read_reservations = JSON.parse(read_reservations_str);
 
-  res.json(read_reservations);
-  // res.send(read_reservations); // sends JSON string
+    res.json(read_reservations);
+    // res.send(read_reservations); // sends JSON string
+  }
 });
 
 // Helper function to calculate time to minutes
